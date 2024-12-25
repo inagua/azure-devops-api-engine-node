@@ -1,0 +1,21 @@
+{
+  "name": "ado",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha sources --recursive",
+    "test:watch": "mocha sources --recursive --timeout 60000 --watch --watch-extensions spec.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "1.7.9",
+    "azure-devops-node-api": "14.1.0"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-as-promised": "7.1.1",
+    "mocha": "8.2.0"
+  }
+}

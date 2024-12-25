@@ -1,0 +1,6 @@
+/.idea/
+/node_modules/
+/package-lock.json
+/index-ado.js
+/index.js
+/credentials-my.js
