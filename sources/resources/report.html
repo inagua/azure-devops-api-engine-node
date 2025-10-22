@@ -167,7 +167,7 @@
     </div>
     <h1><!-- TODO_TITLE --></h1>
     <p id="report-date"><!-- TODO_DATE --></p>
-    <button class="toggle-filter-btn" onclick="toggleFilters()">Show/Hide Filters</button>
+    <!-- button class="toggle-filter-btn" onclick="toggleFilters()">Show/Hide Filters</button -->
     <button class="download-btn" title="Need access to internet to generate the PDF" onclick="downloadPDF()">Download PDF</button>
   </header>
 
@@ -260,7 +260,7 @@
   </footer>
 
   <script>
-    // const today = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric'});
+    const today = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric'});
     // document.getElementById("report-date").textContent = `Date: ${today}`;
 
     // Calculate totals
