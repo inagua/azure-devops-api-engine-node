@@ -23,4 +23,21 @@ const get$ = (org, project, path) => {
     });
 }
 
+const post$ = (org, project, path, data) => {
+    const url = project ? pathForOrgAndProject(org, project, path) : pathForOrg(org, path);
+    return http.post(url,
+        data, 
+        {
+            auth: {
+                username: ADO.Email,
+                password: ADO.PersonalAccessToken,
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+}
+
 module.exports.get$ = get$;
+module.exports.post$ = post$;

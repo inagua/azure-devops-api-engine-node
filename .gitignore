@@ -3,4 +3,6 @@
 /package-lock.json
 /index-ado.js
 /index.js
-/credentials-my.js
+/credentials.js
+/executions/
+/**.pivate.*

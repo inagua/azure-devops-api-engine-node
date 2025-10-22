@@ -13,7 +13,12 @@ const {get$} = require("./ado.api");
  *     rev: 1,
  *     revisedBy: [Object],
  *     revisedDate: '2024-12-17T11:18:22.62Z',
- *     fields: [Object],
+ *     fields: {
+ *          "System.TeamProject": {"newValue": "MyProject"},
+ *          "System.AreaPath": {"newValue": "MyProject\\Epic winners"},
+ *          "System.IterationPath": {"newValue": "MyProject\\Sprint 131"},
+ *          "System.Title": {"newValue": " Message Acceptance issue - Different Group "}
+ *     }
  *     url: 'https://dev.azure.com/{organization}/983b149e-bffd-4174-8e79-181493394e0b/_apis/wit/workItems/2529915/updates/1'
  * }
  */
