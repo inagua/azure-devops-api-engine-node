@@ -1,0 +1,28 @@
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  node_version: '16.x'
+
+steps:
+- checkout: self
+
+- task: Checkout@1
+  inputs:
+    repository: '<external_project>/<external_repository>'
+    clean: true
+    persistCredentials: true
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '$(node_version)'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    node ./scripts/backlog-metrics.js
+  displayName: '>> Building Backlog Metrics report...'

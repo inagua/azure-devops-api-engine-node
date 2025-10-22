@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><!-- TODO_PROJECT_CODE --> | <!-- TODO_TITLE --></title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --company-yellow: #ffcc00;
+      --company-dark: #1a1a1a;
+      --background: #f9f9f9;
+      --row-even: #ffffff;
+      --row-odd: #f2f2f2;
+      --hover: #ffe680;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background-color: var(--background);
+      margin: 0;
+      padding: 0;
+      color: var(--company-dark);
+    }
+
+    header {
+      background-color: var(--company-yellow);
+      color: var(--company-dark);
+      padding: 2.5rem 1rem 2rem;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .product-name {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      text-align: left;
+    }
+
+    .product-name .code {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .product-name .title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: block;
+      margin-top: -4px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    main {
+      padding: 2rem 5%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background-color: #fff7d6;
+      font-weight: 600;
+      color: var(--company-dark);
+      cursor: pointer;
+      position: relative;
+    }
+
+    tbody tr:nth-child(odd) { background-color: var(--row-odd); }
+    tbody tr:nth-child(even) { background-color: var(--row-even); }
+    tbody tr:hover { background-color: var(--hover); }
+
+    tfoot td {
+      font-weight: bold;
+      background-color: #fff9e0;
+    }
+
+    .center { text-align: center; }
+    .right { text-align: right; }
+
+    .download-btn, .toggle-filter-btn {
+      position: absolute;
+      top: 1.2rem;
+      background-color: var(--company-dark);
+      color: var(--company-yellow);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .download-btn:hover, .toggle-filter-btn:hover { background-color: #333; transform: translateY(-1px); }
+
+    .download-btn { right: 1.5rem; }
+    .toggle-filter-btn { right: 12rem; }
+
+    .download-btn[title] { cursor: help; }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    th.sort-asc::after { content:" ▲"; font-size:0.8rem; }
+    th.sort-desc::after { content:" ▼"; font-size:0.8rem; }
+
+    .filter-input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+      padding: 2px 4px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .trend-positive { color: green; font-weight: 600; }
+    .trend-negative { color: red; font-weight: 600; }
+
+    a { text-decoration: none; color: inherit; }
+    a:hover { text-decoration: underline; color: blue; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="product-name">
+      <span class="code"><!-- TODO_PROJECT_CODE --></span>
+      <span class="title"><!-- TODO_PROJECT_NAME --></span>
+    </div>
+    <h1><!-- TODO_TITLE --></h1>
+    <p id="report-date"><!-- TODO_DATE --></p>
+    <button class="toggle-filter-btn" onclick="toggleFilters()">Show/Hide Filters</button>
+    <button class="download-btn" title="Need access to internet to generate the PDF" onclick="downloadPDF()">Download PDF</button>
+  </header>
+
+  <main>
+    <table id="work-items-table">
+      <thead>
+        <tr>
+          <!-- TODO_HEADERS -->
+        </tr>
+        <!-- <tr class="filter-row" style="display:none;">
+          <th class="center"><input class="filter-input" placeholder="Filter"></th>
+          <th class="center"><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+          <th><input class="filter-input" placeholder="Filter"></th>
+        </tr> -->
+      </thead>
+      <tbody>
+        <!-- TODO_ROWS -->
+         <!-- 
+        <tr>
+          <td class="center">1</td>
+          <td class="center">1001</td>
+          <td>User Story</td>
+          <td><a href="https://acme.com/workitems/1001" target="_blank">As a dispatcher, I can view real-time vessel positions</a></td>
+          <td>Done</td>
+          <td class="right">8</td>
+          <td class="right">9</td>
+          <td class="right trend-negative">-5%</td>
+        </tr>
+        <tr>
+          <td class="center">2</td>
+          <td class="center">1002</td>
+          <td>Bug</td>
+          <td><a href="https://acme.com/workitems/1002" target="_blank">Incorrect ETA calculation for delayed shipments</a></td>
+          <td>Done</td>
+          <td class="right">3</td>
+          <td class="right">4</td>
+          <td class="right trend-positive">+10%</td>
+        </tr>
+        <tr>
+          <td class="center">3</td>
+          <td class="center">1003</td>
+          <td>User Story</td>
+          <td><a href="https://acme.com/workitems/1003" target="_blank">Allow customers to track containers via mobile app</a></td>
+          <td>In Progress</td>
+          <td class="right">13</td>
+          <td class="right">10</td>
+          <td class="right trend-negative">-2%</td>
+        </tr>
+        <tr>
+          <td class="center">4</td>
+          <td class="center">1004</td>
+          <td>Task</td>
+          <td><a href="https://acme.com/workitems/1004" target="_blank">Integrate port API for customs clearance</a></td>
+          <td>To Do</td>
+          <td class="right">5</td>
+          <td class="right">0</td>
+          <td class="right trend-positive">+15%</td>
+        </tr>
+        <tr>
+          <td class="center">5</td>
+          <td class="center">1005</td>
+          <td>Epic</td>
+          <td><a href="https://acme.com/workitems/1005" target="_blank">Digitalize end-to-end shipment process</a></td>
+          <td>In Progress</td>
+          <td class="right">21</td>
+          <td class="right">18</td>
+          <td class="right trend-negative">-8%</td>
+        </tr>
+         -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="right">Total</td>
+          <td class="right" id="total-estimation"></td>
+          <td class="right" id="total-actual"></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </main>
+
+  <footer>
+    Generated automatically with <strong>AI (<a href="https://dev.azure.com/" target="_blank">Agile Intelligence</a> ;)</strong>.
+  </footer>
+
+  <script>
+    // const today = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric'});
+    // document.getElementById("report-date").textContent = `Date: ${today}`;
+
+    // Calculate totals
+    const estimationCells = Array.from(document.querySelectorAll("tbody td:nth-child(6)"));
+    const actualCells = Array.from(document.querySelectorAll("tbody td:nth-child(7)"));
+    document.getElementById("total-estimation").textContent = estimationCells.reduce((sum, td)=>sum+Number(td.textContent),0);
+    document.getElementById("total-actual").textContent = actualCells.reduce((sum, td)=>sum+Number(td.textContent),0);
+
+    // Toggle filter row
+    function toggleFilters() {
+      const row = document.querySelector('.filter-row');
+      row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+    }
+
+    // PDF export
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation:"landscape" });
+      doc.setFont("helvetica","bold"); doc.setFontSize(18);
+      doc.text("List of the Work Items",14,15);
+      doc.setFont("helvetica","normal"); doc.setFontSize(11);
+      doc.text("Product: My Product",14,23);
+      doc.text(`Date: ${today}`,14,30);
+      doc.autoTable({ html:"#work-items-table", startY:36, theme:"grid", headStyles:{fillColor:[255,204,0], textColor:[0,0,0]}, footStyles:{fillColor:[255,245,180]}, styles:{fontSize:10,cellPadding:4,lineColor:[230,230,230],lineWidth:0.2}});
+      doc.text("Generated automatically with AI - Agile Intelligence.",14,doc.lastAutoTable.finalY+15);
+      doc.save(`Work_Items_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+
+    // Sorting
+    const table = document.getElementById("work-items-table");
+    const headers = table.querySelectorAll("thead tr:first-child th");
+    headers.forEach((header,index)=>header.addEventListener("click",()=>sortTable(index)));
+    function sortTable(colIndex){
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      const isNumeric = ["#","ID","Estimation (pts)","Actual Duration (hrs)","Trend (%)"].includes(headers[colIndex].textContent);
+      const currentOrder = headers[colIndex].classList.contains("sort-asc")?"asc":headers[colIndex].classList.contains("sort-desc")?"desc":null;
+      headers.forEach(h=>h.classList.remove("sort-asc","sort-desc"));
+      const newOrder = currentOrder==="asc"?"desc":"asc";
+      headers[colIndex].classList.add(newOrder==="asc"?"sort-asc":"sort-desc");
+      rows.sort((a,b)=>{
+        let aVal = a.children[colIndex].textContent.replace('%','').trim();
+        let bVal = b.children[colIndex].textContent.replace('%','').trim();
+        if(isNumeric){ aVal=parseFloat(aVal)||0; bVal=parseFloat(bVal)||0; }
+        if(aVal<bVal) return newOrder==="asc"?-1:1;
+        if(aVal>bVal) return newOrder==="asc"?1:-1;
+        return 0;
+      });
+      rows.forEach(row=>tbody.appendChild(row));
+    }
+
+    // Filtering
+    const filterInputs = document.querySelectorAll(".filter-input");
+    filterInputs.forEach(input=>input.addEventListener("input",()=>filterTable()));
+    function filterTable(){
+      const tbody = table.querySelector("tbody");
+      Array.from(tbody.querySelectorAll("tr")).forEach(row=>{
+        let show = true;
+        filterInputs.forEach((input,colIndex)=>{
+          const val=input.value.toLowerCase();
+          const cell=row.children[colIndex].textContent.toLowerCase();
+          if(val && !cell.includes(val)) show=false;
+        });
+        row.style.display=show?"":"none";
+      });
+    }
+  </script>
+</body>
+</html>
