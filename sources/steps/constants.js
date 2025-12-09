@@ -6,6 +6,12 @@ module.exports. Fields = {
     Type: 'System.WorkItemType',
     Effort: 'Microsoft.VSTS.Scheduling.Effort',
     States: {
-        InDev: '03_In dev'
+        InDev: '03_In dev',
+        Done: 'Done',
     },
+    Computed: {
+        ExpectedDays: 'ExpectedDays',
+        DaysTrend: 'DaysTrend',
+        CountOfInDevMoves: 'CountOfInDevMoves',
+    }
 }

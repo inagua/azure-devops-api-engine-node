@@ -152,8 +152,43 @@
       border: 1px solid #ccc;
     }
 
-    .trend-positive { color: green; font-weight: 600; }
-    .trend-negative { color: red; font-weight: 600; }
+    .alert-green { 
+      background-color: #d4edda;   /* Light green background */
+      color: #155724;             /* Dark green text */
+      border: 1px solid #c3e6cb;  /* Border color */
+      font-weight: bold;          /* Emphasize text */
+      border-radius: 8px;         /* Rounded corners */
+      padding: 15px;              /* Extra padding */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .alert-red { 
+      background-color: #f8d7da;   /* Light red background */
+      color: #721c24;             /* Dark red text */
+      border: 1px solid #f5c6cb;  /* Border color */
+      font-weight: bold;          /* Bold text for emphasis */
+      border-radius: 8px;         /* Rounded corners */
+      padding: 15px;              /* Extra padding */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .alert-blue { 
+      margin: 10px;
+      background-color: #d1ecf1;   /* Light blue background */
+      color: #0c5460;             /* Dark teal text */
+      border: 1px solid #bee5eb;  /* Border color */
+      font-weight: bold;          /* Emphasize text */
+      border-radius: 8px;         /* Rounded corners */
+      padding: 15px;              /* Extra padding */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .alert-yellow { 
+      background-color: #fff3cd;   /* Light yellow background */
+      color: #856404;             /* Dark yellow text */
+      border: 1px solid #ffeeba;  /* Border color */
+      font-weight: bold;          /* Make text bold */
+      border-radius: 8px;         /* Rounded corners */
+      padding: 15px;              /* Extra padding */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
 
     a { text-decoration: none; color: inherit; }
     a:hover { text-decoration: underline; color: blue; }
@@ -247,6 +282,7 @@
         <tr>
           <td colspan="5" class="right">Total</td>
           <td class="right" id="total-estimation"></td>
+          <td class="right" id="total-expected"></td>
           <td class="right" id="total-actual"></td>
           <td></td>
           <td></td>
@@ -265,8 +301,10 @@
 
     // Calculate totals
     const estimationCells = Array.from(document.querySelectorAll("tbody td:nth-child(6)"));
-    const actualCells = Array.from(document.querySelectorAll("tbody td:nth-child(7)"));
+    const expectedCells = Array.from(document.querySelectorAll("tbody td:nth-child(7)"));
+    const actualCells = Array.from(document.querySelectorAll("tbody td:nth-child(8)"));
     document.getElementById("total-estimation").textContent = estimationCells.reduce((sum, td)=>sum+Number(td.textContent),0);
+    document.getElementById("total-expected").textContent = expectedCells.reduce((sum, td)=>sum+Number(td.textContent),0);
     document.getElementById("total-actual").textContent = actualCells.reduce((sum, td)=>sum+Number(td.textContent),0);
 
     // Toggle filter row
