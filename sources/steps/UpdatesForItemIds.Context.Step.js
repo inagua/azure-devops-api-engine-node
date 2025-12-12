@@ -1,6 +1,7 @@
 const {Step} = require('../engine/engine');
 const {Items} = require("../api/items.api");
 const {Fields} = require("./constants");
+const {ItemsService} = require("../services/items.service");
 
 
 /**
@@ -28,6 +29,7 @@ class UpdatesForItemIdsContextStep extends Step {
             item.stateUpdates = item.updates.filter(u => u?.fields && !!u.fields[Fields.State]);
             item.inDevStateUpdates = item.updates.filter(u => u?.fields && !!u.fields[Fields.State] && u.fields[Fields.State].newValue === Fields.States.InDev);
             item.inDevMs = Items.stateMSForUpdates(item.updates);
+            item.iterations = ItemsService.findIterations(item);
         }
         return context;
     }
