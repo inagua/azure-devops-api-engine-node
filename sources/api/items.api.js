@@ -1,6 +1,5 @@
 const moment = require('moment');
 const { get$ } = require("../steps/ado.api");
-const { Fields } = require("../steps/constants");
 
 
 /**
@@ -31,63 +30,7 @@ const revisionsForItemId$ = async (organization, projectCode, itemId) => {
     return data.value; // {id, rev, fields, url}[]
 }
 
-// https://momentjs.com/docs/#/durations/days/
-const stateMSForRevisions = (revisions, expectedState = Fields.States.InDev) => {
-    let inProgressStart = null;
-    let totalDuration = 0;
-
-    for (const rev of revisions) {
-        const state = rev.fields[Fields.State];
-        const changedDate = moment(rev.fields[Fields.ChangedDate]);
-
-        if (state === expectedState && !inProgressStart) {
-            inProgressStart = changedDate;
-        } else if (state !== expectedState && inProgressStart) {
-            totalDuration += moment.duration(changedDate.diff(inProgressStart)).asMilliseconds();
-            inProgressStart = null;
-        }
-    }
-
-    // If still in progress at the end
-    if (inProgressStart) {
-        totalDuration += moment.duration(moment().diff(inProgressStart)).asMilliseconds();
-    }
-
-    return totalDuration; //.toFixed(2);
-}
-
-const stateMSForUpdates = (updates, expectedState = Fields.States.InDev) => {
-    let inProgressStart = null;
-    let totalMs = 0;
-
-    for (const update of updates) {
-        const stateChange = update.fields?.[Fields.State];
-
-        if (stateChange) {
-            const changedDate = new Date(update.fields?.[Fields.ChangedDate]?.newValue || update.revisedDate);
-
-            if (stateChange?.newValue === expectedState && !inProgressStart) {
-                inProgressStart = changedDate;
-            } else if (stateChange?.newValue !== expectedState && inProgressStart) {
-                totalMs += changedDate - inProgressStart;
-                inProgressStart = null;
-            }
-        }
-    }
-
-    // If still in progress at the end
-    if (inProgressStart) {
-        totalMs += new Date() - inProgressStart;
-    }
-
-    // const days = totalMs / (1000 * 60 * 60 * 24);
-    // return days.toFixed(2);
-    return totalMs; //.toFixed(2);
-}
-
 module.exports.Items = {
     updatesForItemId$,
     revisionsForItemId$,
-    stateMSForRevisions,
-    stateMSForUpdates,
 }
