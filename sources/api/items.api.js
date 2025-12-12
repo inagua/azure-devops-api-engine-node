@@ -9,10 +9,11 @@ const { Fields } = require("../steps/constants");
  * @param organization
  * @param projectCode
  * @param itemId
+ * @param credentials
  * @returns {Promise<*>}
  */
-const updatesForItemId$ = async (organization, projectCode, itemId) => {
-    const { data } = await get$(organization, projectCode, `/_apis/wit/workItems/${itemId}/updates?api-version=5.1`);
+const updatesForItemId$ = async (organization, projectCode, itemId, credentials) => {
+    const { data } = await get$(organization, projectCode, `/_apis/wit/workItems/${itemId}/updates?api-version=5.1`, credentials);
     return data.value; // {id, rev, fields, url}[]
 }
 

@@ -17,7 +17,7 @@ class TeamForNameStep extends Step {
     }
 
     async doRun$(context) {
-        const {data} = await get$(context.organization, '', `_apis/projects/${context.projectName}/teams?api-version=7.1`);
+        const {data} = await get$(context.organization, '', `_apis/projects/${context.projectName}/teams?api-version=7.1`, context.credentials);
         const teams = data.value.filter(team => team.name === context.teamName);
         if (teams.length === 0) throw new Error(`No team found for name: ${context.teamName}`);
         if (teams.length > 1) throw new Error(`Several teams found for name: ${context.teamName}`);

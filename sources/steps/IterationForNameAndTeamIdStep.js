@@ -19,7 +19,7 @@ class IterationForNameAndTeamIdStep extends Step {
     }
 
     async doRun$(context) {
-        const {data} = await get$(context.organization, context.projectName, `/${context.teamId}/_apis/work/teamsettings/iterations?api-version=7.1`);
+        const {data} = await get$(context.organization, context.projectName, `/${context.teamId}/_apis/work/teamsettings/iterations?api-version=7.1`, context.credentials);
         if (context.iterationName) {
             const iterations = data.value.filter(iteration => iteration.name === context.iterationName);
             if (iterations.length > 1) throw new Error(`Several Iterations found for name: ${context.iterationName}`);

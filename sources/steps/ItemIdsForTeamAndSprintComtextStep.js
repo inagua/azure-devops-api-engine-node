@@ -18,7 +18,7 @@ class ItemIdsForTeamAndSprintContextStep extends Step {
 
     async doRun$(context) {
         const {organization, projectName, teamName, iterationId} = context;
-        const res = await get$(organization, projectName, `/${teamName}/_apis/work/teamsettings/iterations/${iterationId}/workitems?api-version=7.1`);
+        const res = await get$(organization, projectName, `/${teamName}/_apis/work/teamsettings/iterations/${iterationId}/workitems?api-version=7.1`, context.credentials);
         context.workItemIds = res.data.workItemRelations.filter(i => !i.rel).map(i => i.target.id);
         // context.workItemIds = [2996477];
         return context;

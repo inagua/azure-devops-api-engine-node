@@ -6,7 +6,7 @@ const { log } = require('node:console');
 
 
 const filenameWithTimestampAnd = (filename) => {
-    const timestamp = '99999999'; // new Date().toISOString().replace(/[:.]/g, '-'); // Replace colons and dots with hyphens
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Replace colons and dots with hyphens
     return `${timestamp}-${filename}`;
 }
 
@@ -23,13 +23,14 @@ const csvEOL = '\n';
  */
 class ExportToHTMLStep extends Step {
 
-    constructor({htmlTemplatePath, htmlReportName} = {}) {
+    constructor({htmlTemplatePath, htmlReportPath, htmlReportName} = {}) {
         super()
             .prerequisites(['projectName'])
             .postrequisites([])
         ;
         this._htmlTemplatePath = htmlTemplatePath || path.resolve(__dirname, '../resources/report.html');
-        this._htmlReportName = htmlReportName || 'report.html';
+        // this._htmlReportName = htmlReportName || 'report.html';
+        this._htmlReportPath = htmlReportPath || `./executions/${filenameWithTimestampAnd(htmlReportName || 'report.html')}`;
     }
 
     async doRun$(context) {
@@ -146,10 +147,12 @@ class ExportToHTMLStep extends Step {
 
         if (reportHtmlContent.includes('<!-- TODO_')) throw new Error('Some TODOs are not replaced in the HTML template.');
 
-        const reportPath = `./executions/${filenameWithTimestampAnd(this._htmlReportName)}`;
+        // const reportPath = `./executions/${filenameWithTimestampAnd(this._htmlReportName)}`;
+        const reportPath = this._htmlReportPath;
         fs.writeFileSync(reportPath, reportHtmlContent);
 
-        const csvReportPath = `./executions/${filenameWithTimestampAnd(this._htmlReportName + '.csv')}`;
+        // const csvReportPath = `./executions/${filenameWithTimestampAnd(this._htmlReportName + '.csv')}`;
+        const csvReportPath = this._htmlReportPath + '.csv';
         fs.writeFileSync(csvReportPath, csvHeader + csvRows);
 
         return context;

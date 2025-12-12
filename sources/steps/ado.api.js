@@ -1,21 +1,29 @@
 const axios = require('axios');
 
-const {ADO} = require("../../credentials");
 
-
-const http = axios.create({
-    baseURL: ADO.Site
-});
+// const http = axios.create({
+//     baseURL: ADO.Site
+// });
+let http;
 
 const pathForOrg = (org, topic = '') => `/${org}${topic}`;
 const pathForOrgAndProject = (org, project, topic = '') => pathForOrg(org, `/${project}${topic}`);
 
-const get$ = (org, project, path) => {
+const get$ = (org, project, path, credentials) => {
+    if (!credentials) {
+        const {ADO} = require("../../credentials");
+        credentials = ADO;
+    }
+    if (!http) {
+        http = axios.create({
+            baseURL: credentials.Site
+        });
+    }
     const url = pathForOrgAndProject(org, project, path);
     return http.get(url, {
         auth: {
-            username: ADO.Email,
-            password: ADO.PersonalAccessToken,
+            username: credentials.Email,
+            password: credentials.PersonalAccessToken,
         },
         headers: {
             'Content-Type': 'application/json; charset=utf-8;'

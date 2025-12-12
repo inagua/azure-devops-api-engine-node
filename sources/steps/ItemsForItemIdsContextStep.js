@@ -21,7 +21,7 @@ class ItemsForItemIdsContextStep extends Step {
     async doRun$(context) {
         const {organization, projectName} = context;
         const idsCommaSeparated = context.workItemIds.join(',');
-        const res = await get$(organization, projectName, `/_apis/wit/workitems?ids=${idsCommaSeparated}&api-version=5.1`);
+        const res = await get$(organization, projectName, `/_apis/wit/workitems?ids=${idsCommaSeparated}&api-version=5.1`, context.credentials);
         context.items = res.data.value;
         return context;
     }
