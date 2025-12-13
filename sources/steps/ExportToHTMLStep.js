@@ -52,8 +52,9 @@ class ExportToHTMLStep extends Step {
           <th class="right" title="Actual duration, count of days spent in development. Becarful, this value will change if the work item is still in dev.">In Dev (Days)</th>
           <th class="right" title="Gap between the Expected Duration and the Actual duration">Gap (%)</th>
           <th class="right" title="Number of times the work item has been in development">In Dev (Moves to)</th>
+          <th class="right" title="Number of times the work item has been moved to another sprint">Delays (sprints)</th>
         `;
-        const csvHeader = ['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV'].join(csvSep) + csvEOL;
+        const csvHeader = ['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV', 'DELAYS (Sprints)'].join(csvSep) + csvEOL;
 
         const countOfInDevMoves = (item) => (item.inDevStateUpdates || []).length;
         const isDevCompleted = (item) => {
@@ -113,6 +114,9 @@ class ExportToHTMLStep extends Step {
           if (item._computed[Fields.Computed.CountOfInDevMoves] > 1) return 'alert-yellow';
           return '';
         };
+        const toDelaysClass = (item) => {
+          return '';
+        };
 
         const rows = context.items.map((item, i) => (`
           <tr>
@@ -126,12 +130,23 @@ class ExportToHTMLStep extends Step {
             <td class="right">${msToDaysTrunc(item.inDevMs)}</td><!-- IN DEV DURATION -->
             <td class="right ${toTrendClass(item)}" title="">${toTrendText(item)}</td><!-- TREND -->
             <td class="right ${toMovesClass(item)}">${item._computed[Fields.Computed.CountOfInDevMoves]}</td><!-- IN DEV TRANSITIONS COUNT -->
+            <td class="right ${toDelaysClass(item)}" title="${item.iterations.join('\n')}">${item.iterations?.count || '-'}</td><!-- IN DEV TRANSITIONS COUNT -->
           </tr>
         `)).join('\n');
-        const csvRows = context.items.map((item, i) => (`${i + 1}${csvSep}${item.id}${csvSep}${item.fields['System.WorkItemType']}${csvSep}`
-          + `${item.fields['System.Title']}${csvSep}${item.fields[Fields.State]}${csvSep}${item.fields[Fields.Effort] || '0'}${csvSep}`
-          + `${toExpectedText(item)}${csvSep}${msToDaysTrunc(item.inDevMs)}${csvSep}${toTrendText(item)}${csvSep}${item._computed[Fields.Computed.CountOfInDevMoves]}`))
-          .join(csvEOL);
+        const csvRows = context.items.map((item, i) => ([
+                `${i + 1}`,
+                `${item.id}`,
+                `${item.fields['System.WorkItemType']}`,
+                `${item.fields['System.Title']}`,
+                `${item.fields[Fields.State]}`,
+                `${item.fields[Fields.Effort] || 0}`,
+                `${toExpectedText(item)}`,
+                `${msToDaysTrunc(item.inDevMs)}`,
+                `${toTrendText(item)}`,
+                `${item._computed[Fields.Computed.CountOfInDevMoves]}`,
+                `${item.iterations?.count || 0}`,
+            ].join(csvSep)
+        )).join(csvEOL);
 
         // const t = context.items.find(i => i.id === 3143857)
         // console.log(t);
