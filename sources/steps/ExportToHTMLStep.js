@@ -1,4 +1,5 @@
-const path = require("path");const fs = require('node:fs');
+const path = require("path");
+const fs = require('node:fs');
 
 const {Step} = require('../engine/engine');
 const {Fields} = require("./constants");
@@ -56,62 +57,29 @@ class ExportToHTMLStep extends Step {
         `;
         const csvHeader = ['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV', 'DELAYS (Sprints)'].join(csvSep) + csvEOL;
 
-        const countOfInDevMoves = (item) => (item.inDevStateUpdates || []).length;
-        const isDevCompleted = (item) => {
-          const isStarted = countOfInDevMoves(item) > 0;
-          return (item.fields[Fields.State] !== Fields.States.InDev) && isStarted;
-        }
-
-        // let totalEffort = 0;
-        // let totalMs = 0;
-        let coeffsSum = 0;
-        let coeffsCount = 0;
-        context.items.forEach(item => {
-          const isStarted = countOfInDevMoves(item) > 0;
-          const effort = item.fields[Fields.Effort];
-          const inDevMs = item.inDevMs;
-          if (isDevCompleted(item) && effort && inDevMs) {
-            // totalEffort += effort;
-            // totalMs += inDevMs;
-            coeffsSum += inDevMs / effort;
-            coeffsCount++;
-            // console.log('>>>>>', inDevMs, effort, inDevMs / effort, coeffsSum);
-          }
-        });
-        const coeffMs = coeffsCount ? coeffsSum / coeffsCount : 0;
-        const coeffDays = msToDays(coeffMs);
-        const expectedDaysForEffort = (effort) => effort * coeffDays;
-
-        context.items.forEach((item, i) => {
-          item._computed = {};
-          item._computed[Fields.Computed.ExpectedDays] = expectedDaysForEffort(item.fields[Fields.Effort]);
-          item._computed[Fields.Computed.DaysTrend] = item._computed[Fields.Computed.ExpectedDays] === 0 ? null : Math.trunc((msToDays(item.inDevMs) - expectedDaysForEffort(item.fields[Fields.Effort]))/expectedDaysForEffort(item.fields[Fields.Effort])*100);
-          item._computed[Fields.Computed.CountOfInDevMoves] = countOfInDevMoves(item);
-        });
-
         const toStateClass = (item) => {
           if (isDevCompleted(item)) return 'alert-green';
           return '';
         };
         const toExpectedText = (item) => {
-          return Math.round(item._computed[Fields.Computed.ExpectedDays] || 0);
+          return Math.round(item.computed[Fields.Computed.ExpectedDays] || 0);
         };
         const toTrendClass = (item) => {
-          if (item._computed[Fields.Computed.DaysTrend] != null && Math.abs(item._computed[Fields.Computed.DaysTrend]) < 10) return 'alert-green';
-          if (item._computed[Fields.Computed.DaysTrend] > 20) return `alert-red`;
-          if (item._computed[Fields.Computed.DaysTrend] < -20) return `alert-blue`;
+          if (item.computed[Fields.Computed.DaysTrend] != null && Math.abs(item.computed[Fields.Computed.DaysTrend]) < 10) return 'alert-green';
+          if (item.computed[Fields.Computed.DaysTrend] > 20) return `alert-red`;
+          if (item.computed[Fields.Computed.DaysTrend] < -20) return `alert-blue`;
           return '';
         };
         const toTrendText = (item) => {
-          if (item._computed[Fields.Computed.DaysTrend] === 0) return '==';
-          if (item._computed[Fields.Computed.DaysTrend] > 0) return `+${item._computed[Fields.Computed.DaysTrend]}%`;
-          if (item._computed[Fields.Computed.DaysTrend]) return `${item._computed[Fields.Computed.DaysTrend]}%`;
+          if (item.computed[Fields.Computed.DaysTrend] === 0) return '==';
+          if (item.computed[Fields.Computed.DaysTrend] > 0) return `+${item.computed[Fields.Computed.DaysTrend]}%`;
+          if (item.computed[Fields.Computed.DaysTrend]) return `${item.computed[Fields.Computed.DaysTrend]}%`;
           return '-';
         };
         const toMovesClass = (item) => {
-          // if (item._computed[Fields.Computed.CountOfInDevMoves] === 1) return 'moves-ok';
-          if (item._computed[Fields.Computed.CountOfInDevMoves] > 2) return `alert-red`;
-          if (item._computed[Fields.Computed.CountOfInDevMoves] > 1) return 'alert-yellow';
+          // if (item.computed[Fields.Computed.CountOfInDevMoves] === 1) return 'moves-ok';
+          if (item.computed[Fields.Computed.CountOfInDevMoves] > 2) return `alert-red`;
+          if (item.computed[Fields.Computed.CountOfInDevMoves] > 1) return 'alert-yellow';
           return '';
         };
         const toDelaysClass = (item) => {
@@ -129,7 +97,7 @@ class ExportToHTMLStep extends Step {
             <td class="right" title="Coeff: ${coeffDays}">${toExpectedText(item)}</td><!-- EXPECTED --> 
             <td class="right">${msToDaysTrunc(item.inDevMs)}</td><!-- IN DEV DURATION -->
             <td class="right ${toTrendClass(item)}" title="">${toTrendText(item)}</td><!-- TREND -->
-            <td class="right ${toMovesClass(item)}">${item._computed[Fields.Computed.CountOfInDevMoves]}</td><!-- IN DEV TRANSITIONS COUNT -->
+            <td class="right ${toMovesClass(item)}">${item.computed[Fields.Computed.CountOfInDevMoves]}</td><!-- IN DEV TRANSITIONS COUNT -->
             <td class="right ${toDelaysClass(item)}" title="${item.iterations.join('\n')}">${item.iterations?.count || '-'}</td><!-- IN DEV TRANSITIONS COUNT -->
           </tr>
         `)).join('\n');
@@ -143,7 +111,7 @@ class ExportToHTMLStep extends Step {
                 `${toExpectedText(item)}`,
                 `${msToDaysTrunc(item.inDevMs)}`,
                 `${toTrendText(item)}`,
-                `${item._computed[Fields.Computed.CountOfInDevMoves]}`,
+                `${item.computed[Fields.Computed.CountOfInDevMoves]}`,
                 `${item.iterations?.count || 0}`,
             ].join(csvSep)
         )).join(csvEOL);

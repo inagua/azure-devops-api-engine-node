@@ -28,24 +28,26 @@ const backlogId = 'Microsoft.RequirementCategory'; // https://dev.azure.com/my-o
 // ########################################
 
 
-const {ItemIdsForTeamAndSprintStep} = require("../sources/steps/ItemIdsForTeamAndSprintStep");
-const {ItemsForItemIdsStep} = require("../sources/steps/ItemsForItemIdsStep");
-const {StateUpdatesForItemStep} = require("../sources/steps/StateUpdatesForItemStep");
-const {StateWentBackForItemStep} = require("../sources/steps/StateWentBackForItemStep");
-const {FilterFieldValueStep} = require("../sources/steps/FilterFieldValueStep");
-const {FilterLambdaStep} = require("../sources/steps/FilterLambdaStep");
-const {SummaryForItemStep} = require("../sources/steps/SummaryForItemStep");
-const { IterationPathUpdatesForItemStep } = require("../sources/steps/IterationPathUpdatesForItemStep");
-const { ExportToCSVStep } = require("../sources/steps/ExportToCSVStep");
-const { TeamForNameStep } = require("../sources/steps/TeamIdForTeamNameStep");
-const { LogContextStep } = require("../sources/steps/LogContextStep");
-const { IterationForNameAndTeamIdStep } = require("../sources/steps/IterationForNameAndTeamIdStep");
-const { ItemIdsForTeamAndBacklogStep } = require("../sources/steps/ItemIdsForTeamAndBacklogStep");
-const { ItemsForItemIdsContextStep } = require("../sources/steps/ItemsForItemIdsContextStep");
-const { ExportToHTMLStep } = require("../sources/steps/ExportToHTMLStep");
-const { ItemIdsForTeamAndSprintContextStep } = require("../sources/steps/ItemIdsForTeamAndSprintComtextStep");
-const { UpdatesForItemIdsContextStep } = require("../sources/steps/UpdatesForItemIds.Context.Step");
-const {RevisionsForItemIdsContextStep} = require("../sources/steps/RevisionsForItemIds.Context.Step");
+// const {ItemIdsForTeamAndSprintStep} = require("../sources/steps/ItemIdsForTeamAndSprintStep");
+// const {ItemsForItemIdsStep} = require("../sources/steps/ItemsForItemIdsStep");
+// const {StateUpdatesForItemStep} = require("../sources/steps/StateUpdatesForItemStep");
+// const {StateWentBackForItemStep} = require("../sources/steps/StateWentBackForItemStep");
+// const {FilterFieldValueStep} = require("../sources/steps/FilterFieldValueStep");
+// const {FilterLambdaStep} = require("../sources/steps/FilterLambdaStep");
+// const {SummaryForItemStep} = require("../sources/steps/SummaryForItemStep");
+// const {IterationPathUpdatesForItemStep} = require("../sources/steps/IterationPathUpdatesForItemStep");
+// const {ExportToCSVStep} = require("../sources/steps/ExportToCSVStep");
+// const {LogContextStep} = require("../sources/steps/LogContextStep");
+// const {ItemIdsForTeamAndBacklogStep} = require("../sources/steps/ItemIdsForTeamAndBacklogStep");
+const {TeamForNameStep} = require("../sources/steps/TeamIdForTeamNameStep");
+const {IterationForNameAndTeamIdStep} = require("../sources/steps/IterationForNameAndTeamIdStep");
+const {ItemsForItemIdsContextStep} = require("../sources/steps/ItemsForItemIdsContextStep");
+const {ItemIdsForTeamAndSprintContextStep} = require("../sources/steps/ItemIdsForTeamAndSprintComtextStep");
+const {UpdatesForItemIdsContextStep} = require("../sources/steps/UpdatesForItemIds.Context.Step");
+// const {ExportToHTMLStep} = require("../sources/steps/ExportToHTMLStep");
+const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMetricsReports.context.step");
+const {MetricsForItemContextStep} = require("../sources/steps/MetricsForItem.context.step");
+// const {RevisionsForItemIdsContextStep} = require("../sources/steps/RevisionsForItemIds.Context.Step");
 
 
 
@@ -80,7 +82,10 @@ const lineForItem = (item) => {
         // .filter(new FilterLambdaStep((item) => item.__itemSlided))
         // .map(new SummaryForItemStep())
         // .map(new ExportToCSVStep('sliding-pbi.csv', {toStringCB: lineForItem, header: ['ID', 'TITLE', 'TYPE', 'STATE', 'API', 'SLIDED', 'SPRINTS'].join(';')}))
-        .chain(new ExportToHTMLStep())
+
+        // .chain(new ExportToHTMLStep())
+        .chain(new MetricsForItemContextStep())
+        .chain(new ExportToMetricsReportsContextStep())
         // .chain(new LogContextStep())
     ;
 
