@@ -13,5 +13,6 @@ module.exports. Fields = {
         ExpectedDays: 'ExpectedDays',
         DaysTrend: 'DaysTrend',
         CountOfInDevMoves: 'CountOfInDevMoves',
+        CoeffInDays: 'coeffInDays',
     }
 }

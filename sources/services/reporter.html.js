@@ -1,5 +1,4 @@
 const fs = require('node:fs');
-
 const {Reporter} = require("./reporter");
 
 class ReporterHTML extends Reporter {
@@ -31,7 +30,7 @@ class ReporterHTML extends Reporter {
         ;
 
         let html = fs.readFileSync(this._templatePath, 'utf8');
-        html = this._replacers.reduce((r, acc) => acc.replaceAll(r.placeholder, r.value), html);
+        html = this._replacers.reduce((acc, r) => acc.replaceAll(r.placeholder, r.value), html);
         if (html.includes('<!-- TODO_')) throw new Error('Some TODOs are not replaced in the HTML template.');
 
         return html;

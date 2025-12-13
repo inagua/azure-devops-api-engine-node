@@ -3,7 +3,7 @@ const fs = require('node:fs');
 
 const {Step} = require('../engine/engine');
 const {Fields} = require("./constants");
-const { log } = require('node:console');
+const {ItemsService} = require("../services/items.service");
 
 
 const filenameWithTimestampAnd = (filename) => {
@@ -58,7 +58,7 @@ class ExportToHTMLStep extends Step {
         const csvHeader = ['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV', 'DELAYS (Sprints)'].join(csvSep) + csvEOL;
 
         const toStateClass = (item) => {
-          if (isDevCompleted(item)) return 'alert-green';
+          if (ItemsService.isDevCompleted(item)) return 'alert-green';
           return '';
         };
         const toExpectedText = (item) => {

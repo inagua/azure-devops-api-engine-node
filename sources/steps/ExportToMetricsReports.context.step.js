@@ -3,6 +3,9 @@ const fs = require('node:fs');
 
 const {Step} = require('../engine/engine');
 const {Fields} = require("./constants");
+const {ReporterHTML} = require("../services/reporter.html");
+const {ReporterCSV} = require("../services/reporter.csv");
+const {ItemsService} = require("../services/items.service");
 
 
 const filenameWithTimestampAnd = (filename) => {
@@ -15,7 +18,7 @@ const msToDays = (ms) => ms / msPerDay;
 const msToDaysTrunc = (ms) => Math.trunc(msToDays(ms));
 
 const toStateClass = (item) => {
-    if (isDevCompleted(item)) return 'alert-green';
+    if (ItemsService.countOfInDevMoves(item)) return 'alert-green';
     return '';
 };
 const toExpectedText = (item) => {
@@ -40,6 +43,9 @@ const toMovesClass = (item) => {
     return '';
 };
 const toDelaysClass = (item) => {
+    const count = item.iterations?.length || 0;
+    if (count > 2) return `alert-red`;
+    if (count > 1) return 'alert-yellow';
     return '';
 };
 
@@ -76,7 +82,8 @@ class ExportToMetricsReportsContextStep extends Step {
             .header(`<th class="right" title="Number of times the work item has been moved to another sprint">Delays (sprints)</th>`)
         ;
 
-        const csvReporter = new ReporterCSV().headers(['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV', 'DELAYS (Sprints)']);
+        const csvReporter = new ReporterCSV()
+            .headers(['#', 'ID','TYPE', 'TITLE', 'STATE', 'ESTIMATION (SP)', 'EXPECTED (Days)', 'In Dev (Days)', 'GAP (%)', 'MOVES TO DEV', 'DELAYS (Sprints)']);
 
         context.items.map((item, i) => {
             htmlReporter
@@ -86,11 +93,11 @@ class ExportToMetricsReportsContextStep extends Step {
                 .cell(`<td><a href="https://dev.azure.com/${context.organization}/${context.projectName}/_workitems/edit/${item.id}" target="_blank">${item.fields['System.Title']}</a></td>`)
                 .cell(`<td class="${toStateClass(item)}"><code>${item.fields[Fields.State]}</code></td>`)
                 .cell(`<td class="right">${item.fields[Fields.Effort] || '0'}</td><!-- EFFORT -->`)
-                .cell(`<td class="right" title="Coeff: ${coeffDays}">${toExpectedText(item)}</td><!-- EXPECTED -->`)
+                .cell(`<td class="right" title="Coeff: ${item.computed[Fields.Computed.CoeffInDays]}">${toExpectedText(item)}</td><!-- EXPECTED -->`)
                 .cell(`<td class="right">${msToDaysTrunc(item.inDevMs)}</td><!-- IN DEV DURATION -->`)
                 .cell(`<td class="right ${toTrendClass(item)}" title="">${toTrendText(item)}</td><!-- TREND -->`)
                 .cell(`<td class="right ${toMovesClass(item)}">${item.computed[Fields.Computed.CountOfInDevMoves]}</td><!-- IN DEV TRANSITIONS COUNT -->`)
-                .cell(`<td class="right ${toDelaysClass(item)}" title="${item.iterations.join('\n')}">${item.iterations?.count || '-'}</td><!-- IN DEV TRANSITIONS COUNT -->`)
+                .cell(`<td class="right ${toDelaysClass(item)}" title="${item.iterations.join('\n')}">${item.iterations?.length || '-'}</td><!-- IN DEV TRANSITIONS COUNT -->`)
                 .row();
 
             csvReporter
@@ -104,7 +111,7 @@ class ExportToMetricsReportsContextStep extends Step {
                 .cell(`${msToDaysTrunc(item.inDevMs)}`)
                 .cell(`${toTrendText(item)}`)
                 .cell(`${item.computed[Fields.Computed.CountOfInDevMoves]}`)
-                .cell(`${item.iterations?.count || 0}`)
+                .cell(`${item.iterations?.length || 0}`)
                 .row();
 
         });

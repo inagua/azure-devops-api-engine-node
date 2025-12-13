@@ -1,3 +1,5 @@
+const fs = require('node:fs');
+
 class Reporter {
 
     _filePath;
@@ -5,8 +7,8 @@ class Reporter {
     _cells = [];
     _rows = [];
 
-    filePath() {
-        this._filePath = filePath;
+    filePath(path) {
+        this._filePath = path;
         return this;
     }
 

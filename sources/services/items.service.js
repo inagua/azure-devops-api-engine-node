@@ -64,7 +64,7 @@ const filterPrefixes = (arr) => {
         const candidate = sorted[i];
         // Check if candidate is a prefix of any string already kept
         const isPrefix = result.some(str => str.startsWith(candidate));
-        if (!isPrefix) {
+        if (candidate && !isPrefix) {
             result.push(candidate);
         }
     }
@@ -81,9 +81,17 @@ const iterationsForUpdates = (updates) => {
     return filterPrefixes(iterations);
 };
 
+const countOfInDevMoves = (item) => (item.inDevStateUpdates || []).length;
+const isDevCompleted = (item) => {
+    const isStarted = countOfInDevMoves(item) > 0;
+    return (item.fields[Fields.State] !== Fields.States.InDev) && isStarted;
+}
 
 
 module.exports.ItemsService = {
+    countOfInDevMoves,
+    isDevCompleted,
+
     stateMSForRevisions,
     stateMSForUpdates,
     iterationsForUpdates,

@@ -45,21 +45,21 @@ const {ItemsForItemIdsContextStep} = require("../sources/steps/ItemsForItemIdsCo
 const {ItemIdsForTeamAndSprintContextStep} = require("../sources/steps/ItemIdsForTeamAndSprintComtextStep");
 const {UpdatesForItemIdsContextStep} = require("../sources/steps/UpdatesForItemIds.Context.Step");
 // const {ExportToHTMLStep} = require("../sources/steps/ExportToHTMLStep");
-const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMetricsReports.context.step");
 const {MetricsForItemContextStep} = require("../sources/steps/MetricsForItem.context.step");
+const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMetricsReports.context.step");
 // const {RevisionsForItemIdsContextStep} = require("../sources/steps/RevisionsForItemIds.Context.Step");
 
 
 
 
-const lineForItem = (item) => {
-    // {"id":2777610,"title":"Free days not retrieved from TMS","state":"04_Ready for test","changedDate":"2025-05-08T11:23:37.78Z","iterations":["my-project\\Sprint 134","my-project\\Sprint 135"],"links":{"api":"https://dev.azure.com/my-org/c91a1eb8-2aea-487f-80f1-789b4b6393b7/_apis/wit/workItems/2777610"}}
-    const s = ';';
-    const iterations = item.iterations.sort();
-    const _iterations = JSON.stringify(iterations);
-    const slided = iterations?.length || 0;
-    return `${item.id}${s}${item.title}${s}${item.type}${s}${item.state}${s}${item.links.api}${s}${slided}${s}${_iterations}`;
-}
+// const lineForItem = (item) => {
+//     // {"id":2777610,"title":"Free days not retrieved from TMS","state":"04_Ready for test","changedDate":"2025-05-08T11:23:37.78Z","iterations":["my-project\\Sprint 134","my-project\\Sprint 135"],"links":{"api":"https://dev.azure.com/my-org/c91a1eb8-2aea-487f-80f1-789b4b6393b7/_apis/wit/workItems/2777610"}}
+//     const s = ';';
+//     const iterations = item.iterations.sort();
+//     const _iterations = JSON.stringify(iterations);
+//     const slided = iterations?.length || 0;
+//     return `${item.id}${s}${item.title}${s}${item.type}${s}${item.state}${s}${item.links.api}${s}${slided}${s}${_iterations}`;
+// }
 
 
 (async () => {
