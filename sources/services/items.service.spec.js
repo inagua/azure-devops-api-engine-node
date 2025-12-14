@@ -9,12 +9,13 @@
 const chai = require('chai');
 chai.use(require('chai-as-promised'));
 const expect = chai.expect; // we are using the "expect" style of Chai
+const chalk = require('chalk');
 
 const {ItemsService} = require('./items.service');
 
 
 
-describe('Items Service', function () {
+describe(chalk.underline('Items Service'), function () {
 
     let item, updatesForStateChanges;
 

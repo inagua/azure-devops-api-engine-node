@@ -9,6 +9,7 @@
 const chai = require('chai');
 chai.use(require('chai-as-promised'));
 const expect = chai.expect; // we are using the "expect" style of Chai
+const chalk = require("chalk");
 
 const {Step} = require('./engine');
 
@@ -37,7 +38,7 @@ class FilterListStep extends Step {
 }
 
 
-describe('Engine', function () {
+describe(chalk.underline('Engine'), function () {
 
     beforeEach(async () => {
     });

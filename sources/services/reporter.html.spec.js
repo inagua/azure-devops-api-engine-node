@@ -9,12 +9,12 @@
 const chai = require('chai');
 chai.use(require('chai-as-promised'));
 const expect = chai.expect; // we are using the "expect" style of Chai
+const chalk = require("chalk");
 
-const {ReporterCSV} = require("./reporter.csv");
 const {ReporterHTML} = require("./reporter.html");
 
 
-describe('Reporter HTML', function () {
+describe(chalk.underline('Reporter HTML'), function () {
 
     beforeEach(async () => {
     });

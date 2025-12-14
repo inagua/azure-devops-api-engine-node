@@ -11,9 +11,10 @@ chai.use(require('chai-as-promised'));
 const expect = chai.expect; // we are using the "expect" style of Chai
 
 const {ReporterCSV} = require("./reporter.csv");
+const chalk = require("chalk");
 
 
-describe('Reporter CSV', function () {
+describe(chalk.underline('Reporter CSV'), function () {
 
     beforeEach(async () => {
     });
