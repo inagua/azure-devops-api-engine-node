@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha sources --recursive",
-    "test:watch": "mocha sources --recursive --timeout 60000 --watch --watch-extensions spec.js"
+    "test": "cross-env NODE_ENV=test mocha sources --recursive",
+    "test:watch": "cross-env NODE_ENV=test mocha sources --recursive --timeout 60000 --watch --watch-extensions spec.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
   "devDependencies": {
     "chai": "3.5.0",
     "chai-as-promised": "7.1.1",
+    "cross-env": "^10.1.0",
     "mocha": "8.2.0"
   }
 }

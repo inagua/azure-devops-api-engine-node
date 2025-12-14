@@ -41,7 +41,7 @@ class Step {
         const result = await this.doRun$(context);
         this._checkPostrequisites(result);
 
-        console.log('>> Step DONE:', this.name());
+        if (process.env.NODE_ENV !== 'test') console.log('>> Step DONE:', this.name());
 
         return this._steps.reduce(
             async (outputs, step) => {

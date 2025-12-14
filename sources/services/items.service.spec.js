@@ -14,7 +14,7 @@ const {ItemsService} = require('./items.service');
 
 
 
-describe.only('Items Service', function () {
+describe('Items Service', function () {
 
     let item, updatesForStateChanges;
 
