@@ -116,11 +116,14 @@ class ExportToMetricsReportsContextStep extends Step {
 
         });
 
-        const today = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric'});
-
+        // const today = new Date().toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric'});
+        const now = new Date().toLocaleString(undefined, {dateStyle: 'full', timeStyle: 'long'});
+        const toDate = (d) => new Date(d).toLocaleString(undefined, {dateStyle: 'short'});
+        const dates = context.iteration?.attributes;
+        const iteration = context.iteration && (`${context.iteration.name} (${toDate(dates.startDate)} to ${toDate(dates.finishDate)})`) || context.iterationName || 'Current sprint';
         htmlReporter
-            .replace('<!-- TODO_TITLE -->', `${context.iterationName ? context.iterationName : 'Current sprint'} - Work items`)
-            .replace('<!-- TODO_DATE -->', `Date: ${today}`)
+            .replace('<!-- TODO_TITLE -->', `${iteration} - Work items`)
+            .replace('<!-- TODO_DATE -->', `Date: ${now}`)
         ;
         if (context.projectCode) htmlReporter.replace('<!-- TODO_PROJECT_CODE -->', context.projectCode);
         if (context.projectTitle) htmlReporter.replace('<!-- TODO_PROJECT_NAME -->', context.projectTitle);

@@ -5,9 +5,28 @@ const {get$} = require("./ado.api");
 /**
  * Get an Iteration and its ID from its name, for a given Project name amd Team ID.
  *
- * If the Iteration name is omitted, the current Iteration will be search.
+ * If the Iteration name is omitted, the current Iteration will be searched.
+ * If the search is made with an ID, the _links property is available.
  * 
- * https://dev.azure.com/my-org/_apis/projects/my-project/teams?api-version=7.1
+ * https://learn.microsoft.com/en-us/rest/api/azure/devops/work/iterations/get?view=azure-devops-rest-7.1&tabs=HTTP#teamsettingsiteration
+ *
+ * Example:
+ * {
+ *      "count": 105,
+ *      "value": [
+ *          {
+ *              "id": "...",
+ *              "name": "Sprint 1",
+ *              "path": "my-project\\Sprint 1",
+ *              "attributes": {
+ *                  "startDate": "2020-07-22T00:00:00Z",
+ *                  "finishDate": "2020-08-11T00:00:00Z",
+ *                  "timeFrame": "past"
+ *              },
+ *          "url": "https://dev.azure.com/my-org/my-project/my-team/_apis/work/teamsettings/iterations/1fdf21b7-3929-42a0-a26e-b1c3f5e51e97"
+ *          },
+ *      ]
+ * }
  */
 class IterationForNameAndTeamIdStep extends Step {
 
