@@ -18,7 +18,7 @@ class ItemIdsForTeamAndBacklogContextStep extends Step {
     }
 
     async doRun$(context) {
-        const {data} = await get$(context.organization, context.projectName, `/${context.teamId}/_apis/work/backlogs/${context.backlogId}/workItems?api-version=7.1`);
+        const {data} = await get$(context.organization, context.projectName, `/${context.teamId}/_apis/work/backlogs/${context.backlogId}/workItems?api-version=7.1`, context.credentials);
         context.workItemIds = data.workItems.map(i => i.target.id);
         return context;
     }
