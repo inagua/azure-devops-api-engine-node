@@ -7,7 +7,7 @@ const {get$} = require("./ado.api");
  *
  * https://dev.azure.com/my-org/_apis/projects/my-project/teams?api-version=7.1
  */
-class TeamForNameStep extends Step {
+class TeamForNameContextStep extends Step {
 
     constructor() {
         super()
@@ -28,4 +28,4 @@ class TeamForNameStep extends Step {
 
 }
 
-module.exports.TeamForNameStep = TeamForNameStep;
+module.exports.TeamForNameContextStep = TeamForNameContextStep;

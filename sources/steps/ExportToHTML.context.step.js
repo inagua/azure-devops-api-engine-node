@@ -22,7 +22,7 @@ const csvEOL = '\n';
 /**
  * Generate an HTML report.
  */
-class ExportToHTMLStep extends Step {
+class ExportToHTMLContextStep extends Step {
 
     constructor({htmlTemplatePath, htmlReportPath, htmlReportName} = {}) {
         super()
@@ -143,4 +143,4 @@ class ExportToHTMLStep extends Step {
 
 }
 
-module.exports.ExportToHTMLStep = ExportToHTMLStep;
+module.exports.ExportToHTMLContextStep = ExportToHTMLContextStep;

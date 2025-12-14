@@ -37,17 +37,17 @@ const backlogId = 'Microsoft.RequirementCategory'; // https://dev.azure.com/my-o
 // const {SummaryForItemStep} = require("../sources/steps/SummaryForItemStep");
 // const {IterationPathUpdatesForItemStep} = require("../sources/steps/IterationPathUpdatesForItemStep");
 // const {ExportToCSVStep} = require("../sources/steps/ExportToCSVStep");
-// const {LogContextStep} = require("../sources/steps/LogContextStep");
-// const {ItemIdsForTeamAndBacklogStep} = require("../sources/steps/ItemIdsForTeamAndBacklogStep");
-const {TeamForNameStep} = require("../sources/steps/TeamIdForTeamNameStep");
-const {IterationForNameAndTeamIdStep} = require("../sources/steps/IterationForNameAndTeamIdStep");
-const {ItemsForItemIdsContextStep} = require("../sources/steps/ItemsForItemIdsContextStep");
-const {ItemIdsForTeamAndSprintContextStep} = require("../sources/steps/ItemIdsForTeamAndSprintComtextStep");
-const {UpdatesForItemIdsContextStep} = require("../sources/steps/UpdatesForItemIds.Context.Step");
-// const {ExportToHTMLStep} = require("../sources/steps/ExportToHTMLStep");
+// const {LogContextStep} = require("../sources/steps/Log.context.step");
+// const {ItemIdsForTeamAndBacklogContextStep} = require("../sources/steps/ItemIdsForTeamAndBacklog.context.step");
+const {TeamForNameContextStep} = require("../sources/steps/TeamIdForTeamName.context.step");
+const {IterationForNameAndTeamIdStep} = require("../sources/steps/IterationForNameAndTeamId.context.step");
+const {ItemsForItemIdsContextStep} = require("../sources/steps/ItemsForItemIds.context.step");
+const {ItemIdsForTeamAndSprintContextStep} = require("../sources/steps/ItemIdsForTeamAndSprint.context.step");
+const {UpdatesForItemIdsContextStep} = require("../sources/steps/UpdatesForItemIds.context.step");
+// const {ExportToHTMLContextStep} = require("../sources/steps/ExportToHTML.context.step");
 const {MetricsForItemContextStep} = require("../sources/steps/MetricsForItem.context.step");
 const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMetricsReports.context.step");
-// const {RevisionsForItemIdsContextStep} = require("../sources/steps/RevisionsForItemIds.Context.Step");
+// const {RevisionsForItemIdsContextStep} = require("../sources/steps/RevisionsForItemIds.context.step");
 
 
 
@@ -64,11 +64,11 @@ const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMe
 
 (async () => {
     const workflow =
-        new TeamForNameStep()
+        new TeamForNameContextStep()
         .chain(new IterationForNameAndTeamIdStep())
 
         // BACKLOG ITEMS IDS
-        // .chain(new ItemIdsForTeamAndBacklogStep())
+        // .chain(new ItemIdsForTeamAndBacklogContextStep())
 
         // SPRINT ITEMS IDS
         .chain(new ItemIdsForTeamAndSprintContextStep())
@@ -83,7 +83,7 @@ const {ExportToMetricsReportsContextStep} = require("../sources/steps/ExportToMe
         // .map(new SummaryForItemStep())
         // .map(new ExportToCSVStep('sliding-pbi.csv', {toStringCB: lineForItem, header: ['ID', 'TITLE', 'TYPE', 'STATE', 'API', 'SLIDED', 'SPRINTS'].join(';')}))
 
-        // .chain(new ExportToHTMLStep())
+        // .chain(new ExportToHTMLContextStep())
         .chain(new MetricsForItemContextStep())
         .chain(new ExportToMetricsReportsContextStep())
         // .chain(new LogContextStep())

@@ -28,7 +28,7 @@ const {get$} = require("./ado.api");
  *      ]
  * }
  */
-class IterationForNameAndTeamIdStep extends Step {
+class IterationForNameAndTeamIdContextStep extends Step {
 
     constructor() {
         super()
@@ -53,4 +53,4 @@ class IterationForNameAndTeamIdStep extends Step {
 
 }
 
-module.exports.IterationForNameAndTeamIdStep = IterationForNameAndTeamIdStep;
+module.exports.IterationForNameAndTeamIdContextStep = IterationForNameAndTeamIdContextStep;

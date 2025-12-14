@@ -8,7 +8,7 @@ const {get$} = require("./ado.api");
  * https://dev.azure.com/my-org/my-project/64ac4b0d-dc0f-4561-b61d-6fce811bf733/_apis/work/backlogs?api-version=7.1
  * https://dev.azure.com/my-org/my-project/64ac4b0d-dc0f-4561-b61d-6fce811bf733/_apis/work/backlogs/Microsoft.RequirementCategory/workItems?api-version=7.1
  */
-class ItemIdsForTeamAndBacklogStep extends Step {
+class ItemIdsForTeamAndBacklogContextStep extends Step {
 
     constructor() {
         super()
@@ -24,4 +24,4 @@ class ItemIdsForTeamAndBacklogStep extends Step {
     }
 
 }
-module.exports.ItemIdsForTeamAndBacklogStep = ItemIdsForTeamAndBacklogStep;
+module.exports.ItemIdsForTeamAndBacklogContextStep = ItemIdsForTeamAndBacklogContextStep;
