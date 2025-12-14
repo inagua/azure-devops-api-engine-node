@@ -28,7 +28,7 @@ class UpdatesForItemIdsContextStep extends Step {
             item.updates = await Items.updatesForItemId$(organization, projectName, itemId, context.credentials);
             item.stateUpdates = item.updates.filter(u => u?.fields && !!u.fields[Fields.State]);
             item.inDevStateUpdates = item.updates.filter(u => u?.fields && !!u.fields[Fields.State] && u.fields[Fields.State].newValue === Fields.States.InDev);
-            item.inDevMs = ItemsService.stateMSForUpdates(item.updates);
+            item.inDevMs = ItemsService.msInStateForUpdatesWithoutWE(item.updates);
             item.iterations = ItemsService.iterationsForUpdates(item.updates);
         }
         return context;
